@@ -380,6 +380,123 @@ function App() {
         </div>
       </div>
 
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "900px",
+          margin: "2rem 0 -1rem",
+          opacity: 0.5,
+          fontSize: "0.75rem",
+          fontWeight: 700,
+          textTransform: "uppercase",
+          letterSpacing: "0.1em",
+          textAlign: "center",
+        }}
+      >
+        Quick Presets & Feature Demos
+      </div>
+
+      <div className="demo-grid">
+        <button
+          className="btn-trigger"
+          onClick={() =>
+            toast({ ...currentConfig, title: "Simple Announcement" })
+          }
+        >
+          Current Config
+        </button>
+
+        <button
+          className="btn-trigger primary"
+          onClick={() =>
+            toast({
+              ...currentConfig,
+              title: "With Description",
+              description:
+                "This toast includes some extra details about the event.",
+            })
+          }
+        >
+          Description Demo
+        </button>
+
+        <button
+          className="btn-trigger success"
+          onClick={() =>
+            toast.success({
+              ...currentConfig,
+              title: "Changes Saved",
+              endContent: '<span style="font-size: 1.25rem;">✨</span>',
+            })
+          }
+        >
+          EndContent Demo
+        </button>
+
+        <button
+          className="btn-trigger warning"
+          onClick={() =>
+            toast.warning({
+              ...currentConfig,
+              title: "Custom Icon",
+              icon: "🚀",
+            })
+          }
+        >
+          Custom Icon
+        </button>
+
+        <button
+          className="btn-trigger secondary"
+          onClick={() =>
+            toast({
+              ...currentConfig,
+              title: "Custom Styles",
+              customStyle: {
+                borderLeft: "4px solid #f06",
+                boxShadow: "0 0 20px rgba(255, 0, 102, 0.2)",
+              },
+            })
+          }
+        >
+          Styling Demo
+        </button>
+
+        <button
+          className="btn-trigger danger"
+          onClick={() =>
+            toast.error({
+              ...currentConfig,
+              title: "Hidden Icon Demo",
+              icon: false,
+              description: "The icon is hidden via props.",
+            })
+          }
+        >
+          Hidden Icon
+        </button>
+
+        <button
+          className="btn-trigger"
+          style={{ background: "linear-gradient(45deg, #f06, #4a90e2)" }}
+          onClick={() => {
+            Array.from({ length: 3 }).forEach((_, i) => {
+              setTimeout(() => {
+                toast({
+                  ...currentConfig,
+                  color: ["primary", "success", "danger"][i],
+                  variant: ["flat", "solid", "bordered"][i],
+                  title: `Waterfall ${i + 1}`,
+                  description: "Testing radius and variant combinations.",
+                });
+              }, i * 200);
+            });
+          }}
+        >
+          Feature Mix
+        </button>
+      </div>
+
       <footer
         style={{
           marginTop: "auto",

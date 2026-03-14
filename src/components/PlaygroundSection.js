@@ -4,44 +4,47 @@ import {
   Bell, CheckCircle2, XCircle, AlertTriangle, Info,
   Palette, Layout, Timer, Settings2, Eye, Code2,
   RefreshCw, Copy, Check, Sparkles, Zap,
+  Rocket,
+  Paintbrush,
 } from 'lucide-react'
 import CodeBlock from './CodeBlock'
 import useClipboard from '../hooks/useClipboard'
+import ToastShowcase from './ToastShowcase'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const COLORS = ['default', 'primary', 'secondary', 'success', 'warning', 'danger']
 const COLOR_META = {
-  default:   { bg: '#6b7280', label: 'Default' },
-  primary:   { bg: '#6366f1', label: 'Primary' },
+  default: { bg: '#6b7280', label: 'Default' },
+  primary: { bg: '#6366f1', label: 'Primary' },
   secondary: { bg: '#8b5cf6', label: 'Secondary' },
-  success:   { bg: '#10b981', label: 'Success' },
-  warning:   { bg: '#f59e0b', label: 'Warning' },
-  danger:    { bg: '#ef4444', label: 'Danger' },
+  success: { bg: '#10b981', label: 'Success' },
+  warning: { bg: '#f59e0b', label: 'Warning' },
+  danger: { bg: '#ef4444', label: 'Danger' },
 }
 
 const VARIANTS = ['flat', 'solid', 'bordered']
 const RADIUSES = ['none', 'sm', 'md', 'lg', 'full']
-const TYPES    = ['default', 'success', 'error', 'warning', 'info']
+const TYPES = ['default', 'success', 'error', 'warning', 'info']
 
 const TYPE_META = {
-  default: { label: 'Default', icon: Bell,          cls: 'hover:bg-muted/80 hover:border-border' },
-  success: { label: 'Success', icon: CheckCircle2,   cls: 'hover:bg-emerald-500/10 hover:text-emerald-500 hover:border-emerald-500/40' },
-  error:   { label: 'Error',   icon: XCircle,        cls: 'hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/40' },
-  warning: { label: 'Warning', icon: AlertTriangle,  cls: 'hover:bg-amber-500/10 hover:text-amber-500 hover:border-amber-500/40' },
-  info:    { label: 'Info',    icon: Info,            cls: 'hover:bg-blue-500/10 hover:text-blue-500 hover:border-blue-500/40' },
+  default: { label: 'Default', icon: Bell, cls: 'hover:bg-muted/80 hover:border-border' },
+  success: { label: 'Success', icon: CheckCircle2, cls: 'hover:bg-emerald-500/10 hover:text-emerald-500 hover:border-emerald-500/40' },
+  error: { label: 'Error', icon: XCircle, cls: 'hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/40' },
+  warning: { label: 'Warning', icon: AlertTriangle, cls: 'hover:bg-amber-500/10 hover:text-amber-500 hover:border-amber-500/40' },
+  info: { label: 'Info', icon: Info, cls: 'hover:bg-blue-500/10 hover:text-blue-500 hover:border-blue-500/40' },
 }
 
 // ─── Real SVG icons from crisp-toast library ─────────────────────────────────
 
 const CT_ICONS = {
-  default:   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>,
-  success:   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>,
-  warning:   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>,
-  error:     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" /></svg>,
-  danger:    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" /></svg>,
-  info:      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>,
-  primary:   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>,
+  default: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>,
+  success: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>,
+  warning: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>,
+  error: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" /></svg>,
+  danger: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" /></svg>,
+  info: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>,
+  primary: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>,
   secondary: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>,
 }
 
@@ -60,25 +63,25 @@ const ToastPreview = ({ config }) => {
   // In crisp-toast, typed toasts (success, error, etc.) use specific default colors.
   // We calculate the effective color to ensure the preview matches the actual library behavior.
   const effectiveColor = config.type === 'success' ? 'success'
-                       : config.type === 'error'   ? 'danger'
-                       : config.type === 'warning' ? 'warning'
-                       : config.type === 'info'    ? 'primary'
-                       : config.color
+    : config.type === 'error' ? 'danger'
+      : config.type === 'warning' ? 'warning'
+        : config.type === 'info' ? 'primary'
+          : config.color
 
   // Map toast type to the color key the library uses for the icon lookup
   const iconKey = config.type === 'error' ? 'danger'
-                : config.type === 'default' ? (config.color === 'default' ? 'default' : config.color)
-                : config.type  // success | warning | info
+    : config.type === 'default' ? (config.color === 'default' ? 'default' : config.color)
+      : config.type  // success | warning | info
 
   const icon = CT_ICONS[iconKey] ?? CT_ICONS.default
 
   // The library's buildClasses():
   // ["ct-toast", darkMode ? "ct-theme-dark" : "ct-theme-light",
   //  `ct-${variant}`, `ct-color-${color}`, `ct-radius-${radius}`]
-  const themeClass   = config.darkMode ? 'ct-theme-dark' : 'ct-theme-light'
+  const themeClass = config.darkMode ? 'ct-theme-dark' : 'ct-theme-light'
   const variantClass = `ct-${config.variant}`                 // ct-flat | ct-solid | ct-bordered
-  const colorClass   = `ct-color-${effectiveColor}`           // ct-color-success etc.
-  const radiusClass  = `ct-radius-${config.radius}`           // ct-radius-lg etc.
+  const colorClass = `ct-color-${effectiveColor}`           // ct-color-success etc.
+  const radiusClass = `ct-radius-${config.radius}`           // ct-radius-lg etc.
 
   return (
     <div
@@ -122,8 +125,8 @@ const ToastPreview = ({ config }) => {
 
 const PlacementPicker = ({ value, onChange }) => {
   const grid = [
-    'top-left',    'top-center',    'top-right',
-    null,           null,            null,
+    'top-left', 'top-center', 'top-right',
+    null, null, null,
     'bottom-left', 'bottom-center', 'bottom-right',
   ]
   return (
@@ -140,11 +143,10 @@ const PlacementPicker = ({ value, onChange }) => {
             key={p}
             onClick={() => onChange(p)}
             title={p}
-            className={`h-8 rounded-md text-[9px] font-bold uppercase tracking-wide transition-all border active:scale-90 ${
-              isActive
+            className={`h-8 rounded-md text-[9px] font-bold uppercase tracking-wide transition-all border active:scale-90 ${isActive
                 ? 'bg-primary text-primary-foreground border-primary shadow-md shadow-primary/20 scale-[1.05]'
                 : 'border-border hover:border-primary/40 hover:bg-muted/60 text-muted-foreground'
-            }`}
+              }`}
           >
             {p.split('-')[1]?.slice(0, 1).toUpperCase() + p.split('-')[0]?.slice(0, 1).toUpperCase()}
           </button>
@@ -159,11 +161,10 @@ const PlacementPicker = ({ value, onChange }) => {
 const ToggleChip = ({ label, checked, onChange }) => (
   <button
     onClick={() => onChange(!checked)}
-    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${
-      checked
+    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${checked
         ? 'bg-primary/10 text-primary border-primary/30'
         : 'bg-muted/50 text-muted-foreground border-border hover:border-primary/20'
-    }`}
+      }`}
   >
     <span className={`w-3 h-3 rounded-full border-2 flex items-center justify-center transition-colors ${checked ? 'bg-primary border-primary' : 'border-muted-foreground/40'}`}>
       {checked && <span className="w-1.5 h-1.5 rounded-full bg-primary-foreground" />}
@@ -192,17 +193,17 @@ const SectionLabel = ({ icon: Icon, children, hint }) => (
 
 const PlaygroundSection = () => {
   const [config, setConfig] = useState({
-    type:        'success',
-    title:       'Changes saved!',
+    type: 'success',
+    title: 'Changes saved!',
     description: 'Project saved successfully.',
-    variant:     'flat',
-    color:       'success',
-    placement:   'bottom-right',
-    radius:      'lg',
-    duration:    5000,
+    variant: 'flat',
+    color: 'success',
+    placement: 'bottom-right',
+    radius: 'lg',
+    duration: 5000,
     progressBar: true,
-    icon:        true,
-    darkMode:    true,
+    icon: true,
+    darkMode: true,
   })
   const [activeTab, setActiveTab] = useState('preview')
   const [copied, copy] = useClipboard()
@@ -214,23 +215,23 @@ const PlaygroundSection = () => {
   const fireToast = (overrides = {}) => {
     const merged = { ...config, ...overrides }
     const opts = {
-      title:       merged.title,
+      title: merged.title,
       description: merged.description || undefined,
-      variant:     merged.variant,
-      color:       merged.color,
-      placement:   merged.placement,
-      radius:      merged.radius,
-      duration:    merged.duration,
+      variant: merged.variant,
+      color: merged.color,
+      placement: merged.placement,
+      radius: merged.radius,
+      duration: merged.duration,
       progressBar: merged.progressBar,
-      darkMode:    merged.darkMode,
+      darkMode: merged.darkMode,
       ...(merged.icon === false && { icon: false }),
     }
     switch (merged.type) {
       case 'success': toast.success(opts); break
-      case 'error':   toast.error(opts);   break
+      case 'error': toast.error(opts); break
       case 'warning': toast.warning(opts); break
-      case 'info':    toast.info(opts);    break
-      default:        toast(opts)
+      case 'info': toast.info(opts); break
+      default: toast(opts)
     }
   }
 
@@ -243,9 +244,9 @@ const PlaygroundSection = () => {
     if (key === 'type') {
       const typeDefaults = {
         success: 'success',
-        error:   'danger',
+        error: 'danger',
         warning: 'warning',
-        info:    'primary',
+        info: 'primary',
         default: 'default'
       }
       if (typeDefaults[val]) updates.color = typeDefaults[val]
@@ -269,6 +270,104 @@ const PlaygroundSection = () => {
     if (!config.icon) lines.push(`  icon: false,`)
     lines.push(`  darkMode: ${config.darkMode},`)
     return `${fn}({\n${lines.join('\n')}\n})`
+  }
+
+  const handlePreset = (id) => {
+    switch (id) {
+      case 'current':
+        fireToast()
+        break
+      case 'description':
+        toast.info({
+          title: 'Did you know?',
+          description: 'You can add detailed descriptions to provide more context to your users.',
+          variant: 'flat',
+          color: 'primary',
+          radius: 'lg'
+        })
+        break
+      case 'endContent':
+        toast.success({
+          title: 'Message Archived',
+          description: 'Your conversation has been moved to trash.',
+          variant: 'flat',
+          radius: 'lg',
+          endContent: (
+            <button
+              onClick={(e) => { e.stopPropagation(); console.log('Undo clicked'); }}
+              className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 rounded-md text-[10px] font-bold hover:bg-emerald-500/20 transition-colors uppercase tracking-wider"
+            >
+              Undo
+            </button>
+          )
+        })
+        break
+      case 'customIcon':
+        toast({
+          title: 'Blast Off!',
+          description: 'Customizing icons is seamless and fast.',
+          icon: <Rocket size={20} className="text-orange-500 animate-bounce" />,
+          variant: 'bordered',
+          radius: 'lg',
+          color: 'primary'
+        })
+        break
+      case 'styling':
+        toast({
+          title: 'Premium Glass',
+          description: 'Using custom CSS for a distinct look.',
+          variant: 'solid',
+          radius: '2xl',
+          style: {
+            background: 'rgba(15, 15, 15, 0.8)',
+            backdropFilter: 'blur(12px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.05)',
+            color: '#fff'
+          }
+        })
+        break
+      case 'hiddenIcon':
+        toast.error({
+          title: 'Minimalist Error',
+          description: 'Icons can be hidden for a cleaner look.',
+          icon: false,
+          variant: 'flat',
+          color: 'danger',
+          radius: 'lg'
+        })
+        break
+      case 'mix':
+        toast({
+          title: 'The Works',
+          description: 'Gradient, animations, and custom placement.',
+          variant: 'solid',
+          radius: 'full',
+          placement: 'top-center',
+          style: {
+            background: 'linear-gradient(to right, #ec4899, #8b5cf6, #3b82f6)',
+            fontWeight: 'bold'
+          }
+        })
+        break
+      case 'async':
+        const promise = new Promise((resolve, reject) => {
+          setTimeout(() => {
+            Math.random() > 0.3 ? resolve() : reject()
+          }, 2000)
+        })
+        toast.promise(promise, {
+          loading: 'Uploading files...',
+          success: 'Files uploaded successfully!',
+          error: 'Upload failed. Please try again.',
+        }, {
+          variant: 'flat',
+          radius: 'lg',
+          darkMode: config.darkMode
+        })
+        break
+      default: break
+    }
   }
 
   return (
@@ -303,11 +402,10 @@ const PlaygroundSection = () => {
                     <button
                       key={type}
                       onClick={() => setAndFire('type', type)}
-                      className={`flex flex-col items-center gap-2 py-3 px-2 rounded-xl border text-xs font-bold transition-all active:scale-95 ${
-                        isActive
+                      className={`flex flex-col items-center gap-2 py-3 px-2 rounded-xl border text-xs font-bold transition-all active:scale-95 ${isActive
                           ? 'bg-primary text-primary-foreground border-primary shadow-md shadow-primary/20'
                           : `border-border bg-background text-muted-foreground ${cls}`
-                      }`}
+                        }`}
                     >
                       <Icon size={18} />
                       {label}
@@ -334,11 +432,10 @@ const PlaygroundSection = () => {
                           key={color}
                           onClick={() => setAndFire('color', color)}
                           title={label}
-                          className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold transition-all active:scale-90 ${
-                            isActive
+                          className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold transition-all active:scale-90 ${isActive
                               ? 'border-foreground/40 bg-foreground/10 text-foreground scale-[1.05]'
                               : 'border-border text-muted-foreground hover:border-foreground/20'
-                          }`}
+                            }`}
                         >
                           <span
                             className="w-3 h-3 rounded-full flex-shrink-0 ring-2 ring-offset-1 ring-offset-card"
@@ -359,11 +456,10 @@ const PlaygroundSection = () => {
                       <button
                         key={v}
                         onClick={() => setAndFire('variant', v)}
-                        className={`flex-1 py-2 px-3 text-xs font-bold rounded-xl border capitalize transition-all active:scale-95 ${
-                          config.variant === v
+                        className={`flex-1 py-2 px-3 text-xs font-bold rounded-xl border capitalize transition-all active:scale-95 ${config.variant === v
                             ? 'bg-primary text-primary-foreground border-primary shadow-md shadow-primary/20'
                             : 'border-border text-muted-foreground hover:border-primary/30 hover:bg-muted/50'
-                        }`}
+                          }`}
                       >
                         {v}
                       </button>
@@ -379,17 +475,15 @@ const PlaygroundSection = () => {
                       <button
                         key={r}
                         onClick={() => setAndFire('radius', r)}
-                        className={`flex-1 py-2 px-2 text-xs font-bold border capitalize transition-all active:scale-95 ${
-                          r === 'none' ? 'rounded-none'
-                          : r === 'sm' ? 'rounded-sm'
-                          : r === 'md' ? 'rounded-md'
-                          : r === 'lg' ? 'rounded-lg'
-                          : 'rounded-full'
-                        } ${
-                          config.radius === r
+                        className={`flex-1 py-2 px-2 text-xs font-bold border capitalize transition-all active:scale-95 ${r === 'none' ? 'rounded-none'
+                            : r === 'sm' ? 'rounded-sm'
+                              : r === 'md' ? 'rounded-md'
+                                : r === 'lg' ? 'rounded-lg'
+                                  : 'rounded-full'
+                          } ${config.radius === r
                             ? 'bg-primary text-primary-foreground border-primary shadow-md shadow-primary/20'
                             : 'border-border text-muted-foreground hover:border-primary/30 hover:bg-muted/50'
-                        }`}
+                          }`}
                       >
                         {r}
                       </button>
@@ -426,6 +520,11 @@ const PlaygroundSection = () => {
               </div>
             </div>
 
+            {/* ── Quick Presets & Feature Demos ── */}
+            {/* <div className="p-6 rounded-2xl border border-border bg-card shadow-sm">
+              <ToastShowcase />
+            </div> */}
+
             {/* ── Global Behavior — no toast fired ── */}
             <div className="p-6 rounded-2xl border border-border bg-card shadow-sm">
               <SectionLabel icon={Timer}>Global Config</SectionLabel>
@@ -452,9 +551,9 @@ const PlaygroundSection = () => {
                 <div>
                   <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block mb-2.5">Options</span>
                   <div className="flex flex-wrap gap-2">
-                    <ToggleChip label="Progress Bar"     checked={config.progressBar} onChange={v => set('progressBar', v)} />
-                    <ToggleChip label="Show Icon"        checked={config.icon}        onChange={v => set('icon', v)} />
-                    <ToggleChip label="Toast Dark Mode"  checked={config.darkMode}    onChange={v => set('darkMode', v)} />
+                    <ToggleChip label="Progress Bar" checked={config.progressBar} onChange={v => set('progressBar', v)} />
+                    <ToggleChip label="Show Icon" checked={config.icon} onChange={v => set('icon', v)} />
+                    <ToggleChip label="Toast Dark Mode" checked={config.darkMode} onChange={v => set('darkMode', v)} />
                   </div>
                 </div>
               </div>
@@ -472,11 +571,10 @@ const PlaygroundSection = () => {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                        activeTab === tab.id
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${activeTab === tab.id
                           ? 'bg-card text-foreground shadow-sm border border-border'
                           : 'text-muted-foreground hover:text-foreground'
-                      }`}
+                        }`}
                     >
                       <tab.icon size={12} />{tab.label}
                     </button>

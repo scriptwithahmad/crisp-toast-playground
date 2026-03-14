@@ -8,6 +8,8 @@ import FeatureSection from './components/FeatureSection'
 import PlaygroundSection from './components/PlaygroundSection'
 import GuideSection from './components/GuideSection'
 import Footer from './components/Footer'
+import ComparisonSection from './components/ComparisonSection'
+import ToastShowcase from './components/ToastShowcase'
 
 function App() {
   const [theme, setTheme] = useState('dark')
@@ -25,6 +27,8 @@ function App() {
         <FeatureSection />
         <PlaygroundSection />
         <GuideSection />
+        {/* <ComparisonSection /> */}
+        {/* <ToastShowcase /> */}
       </main>
       <Footer />
       <style>{`

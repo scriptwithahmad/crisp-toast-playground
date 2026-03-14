@@ -143,3 +143,83 @@ input[type='range']::-webkit-slider-thumb:hover {
   color-scheme: dark;
   @apply text-foreground bg-muted/30;
 }
+
+
+.demo-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  align-items: center;
+  justify-content: center;
+  gap:14px;
+  width:100%;
+  max-width:900px;
+  margin:1rem auto;
+}
+
+.btn-trigger{
+  position:relative;
+  padding:12px 16px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.04);
+  backdrop-filter:blur(10px);
+  color:#eaeaea;
+  font-weight:600;
+  font-size:14px;
+  cursor:pointer;
+  transition:all .25s ease;
+  box-shadow:0 6px 18px rgba(0,0,0,0.25);
+  white-space: nowrap;
+}
+
+.btn-trigger:hover{
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 12px 30px rgba(0,0,0,0.35);
+}
+
+.btn-trigger:active{
+  transform:scale(.96);
+}
+
+
+/* Color Variants */
+
+.btn-trigger.primary{
+  background:linear-gradient(135deg,#4f46e5,#6366f1);
+  color:white;
+}
+
+.btn-trigger.success{
+  background:linear-gradient(135deg,#16a34a,#22c55e);
+  color:white;
+}
+
+.btn-trigger.warning{
+  background:linear-gradient(135deg,#f59e0b,#f97316);
+  color:white;
+}
+
+.btn-trigger.danger{
+  background:linear-gradient(135deg,#ef4444,#f43f5e);
+  color:white;
+}
+
+.btn-trigger.secondary{
+  background:linear-gradient(135deg,#64748b,#94a3b8);
+  color:white;
+}
+
+
+/* fancy gradient button */
+.btn-trigger.gradient{
+  background:linear-gradient(45deg,#f06,#4a90e2,#9333ea);
+  background-size:200%;
+  color:white;
+  animation:gradientMove 6s ease infinite;
+}
+
+@keyframes gradientMove{
+  0%{background-position:0%}
+  50%{background-position:100%}
+  100%{background-position:0%}
+}

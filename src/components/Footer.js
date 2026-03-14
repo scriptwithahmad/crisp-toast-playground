@@ -3,7 +3,9 @@ const Footer = () => (
     <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
       <div className="flex flex-col items-center md:items-start gap-3">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-md bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">C</div>
+          <div className="w-6 h-6 rounded-md bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">
+            <img className='w-4' src="/logo.png" alt="logo here" />
+          </div>
           <span className="font-bold tracking-tight">Crisp Toast</span>
         </div>
         <p className="text-xs text-muted-foreground font-medium">Distributed under MIT License. &copy; 2026</p>

@@ -18,16 +18,20 @@ const Hero = () => {
     const title = type.charAt(0).toUpperCase() + type.slice(1) + ' Notification'
     const description = 'Bringing premium feedback to your app.'
     switch (type) {
-      case 'success': toast.success({ title, description }); break
-      case 'error':   toast.error({ title, description });   break
-      case 'warning': toast.warning({ title, description }); break
-      case 'info':    toast.info({ title, description });    break
+      case 'success': toast.success({ title, description, variant: 'flat', radius: 'lg' }); break
+      case 'error':   toast.error({ title, description, variant: 'flat', radius: 'lg', color: 'danger' });   break
+      case 'warning': toast.warning({ title, description, variant: 'flat', radius: 'lg' }); break
+      case 'info':    toast.info({ title, description, variant: 'flat', radius: 'lg', color: 'primary' });    break
       case 'loading': {
         const p = new Promise(resolve => setTimeout(resolve, 2000))
-        toast.promise(p, { loading: 'Processing...', success: 'Done!', error: 'Failed' })
+        toast.promise(p, { 
+          loading: 'Processing...', 
+          success: 'Done!', 
+          error: 'Failed' 
+        }, { variant: 'flat', radius: 'lg' })
         break
       }
-      default: toast({ title: 'Default Notification', description })
+      default: toast({ title: 'Default Notification', description, variant: 'flat', radius: 'lg' })
     }
   }
 
@@ -66,7 +70,7 @@ const Hero = () => {
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
             {[
               { type: 'success', icon: CheckCircle2, cls: 'hover:bg-emerald-500/10 hover:text-emerald-500 hover:border-emerald-500/50' },
-              { type: 'error', icon: XCircle },
+              { type: 'error', icon: XCircle, cls: 'hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/50' },
               { type: 'warning', icon: AlertTriangle, cls: 'hover:bg-amber-500/10 hover:text-amber-500 hover:border-amber-500/50' },
               { type: 'info', icon: Info, cls: 'hover:bg-blue-500/10 hover:text-blue-500 hover:border-blue-500/50' },
               { type: 'loading', icon: Loader2, cls: 'hover:bg-violet-500/10 hover:text-violet-500 hover:border-violet-500/50' },

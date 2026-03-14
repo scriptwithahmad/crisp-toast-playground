@@ -57,6 +57,14 @@ const CloseIcon = () => (
 // backgrounds, borders, shadows and typography — we just apply the same classes.
 
 const ToastPreview = ({ config }) => {
+  // In crisp-toast, typed toasts (success, error, etc.) use specific default colors.
+  // We calculate the effective color to ensure the preview matches the actual library behavior.
+  const effectiveColor = config.type === 'success' ? 'success'
+                       : config.type === 'error'   ? 'danger'
+                       : config.type === 'warning' ? 'warning'
+                       : config.type === 'info'    ? 'primary'
+                       : config.color
+
   // Map toast type to the color key the library uses for the icon lookup
   const iconKey = config.type === 'error' ? 'danger'
                 : config.type === 'default' ? (config.color === 'default' ? 'default' : config.color)
@@ -69,7 +77,7 @@ const ToastPreview = ({ config }) => {
   //  `ct-${variant}`, `ct-color-${color}`, `ct-radius-${radius}`]
   const themeClass   = config.darkMode ? 'ct-theme-dark' : 'ct-theme-light'
   const variantClass = `ct-${config.variant}`                 // ct-flat | ct-solid | ct-bordered
-  const colorClass   = `ct-color-${config.color}`             // ct-color-success etc.
+  const colorClass   = `ct-color-${effectiveColor}`           // ct-color-success etc.
   const radiusClass  = `ct-radius-${config.radius}`           // ct-radius-lg etc.
 
   return (
@@ -228,8 +236,23 @@ const PlaygroundSection = () => {
 
   // Set state AND fire toast immediately
   const setAndFire = (key, val) => {
-    setConfig(prev => ({ ...prev, [key]: val }))
-    fireToast({ [key]: val })
+    const updates = { [key]: val }
+
+    // Sync color with type for a more intuitive playground experience
+    // that matches the library's default color for each semantic type.
+    if (key === 'type') {
+      const typeDefaults = {
+        success: 'success',
+        error:   'danger',
+        warning: 'warning',
+        info:    'primary',
+        default: 'default'
+      }
+      if (typeDefaults[val]) updates.color = typeDefaults[val]
+    }
+
+    setConfig(prev => ({ ...prev, ...updates }))
+    fireToast(updates)
   }
 
   const generateCode = () => {

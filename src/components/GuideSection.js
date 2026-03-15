@@ -1,4 +1,4 @@
-import Banner from './Banner'
+// import Banner from './Banner'
 import CodeBlock from './CodeBlock'
 
 const GuideSection = () => (
@@ -9,7 +9,7 @@ const GuideSection = () => (
         <p className="text-muted-foreground text-lg">Integrated in seconds, ready for production.</p>
       </div>
 
-      <div className="flex flex-col gap-0">
+      <div className="flex flex-col gap-4">
         {[
           {
             step: 1, title: 'Install Dependencies',
@@ -40,7 +40,7 @@ const GuideSection = () => (
 
     </div>
 
-    <Banner />
+    {/* <Banner /> */}
 
   </section>
 )

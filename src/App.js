@@ -8,6 +8,7 @@ import GuideSection from './components/GuideSection'
 import Hero from './components/Hero'
 import Navbar from './components/Navbar'
 import PlaygroundSection from './components/PlaygroundSection'
+import ApiReference from './components/ApiReference'
 
 function App() {
   const [theme, setTheme] = useState('dark')
@@ -25,6 +26,7 @@ function App() {
         <FeatureSection />
         <PlaygroundSection />
         <GuideSection />
+        <ApiReference />
         {/* <ComparisonSection /> */}
         {/* <ToastShowcase /> */}
       </main>

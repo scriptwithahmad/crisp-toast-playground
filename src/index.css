@@ -104,6 +104,26 @@
   .glass {
     @apply backdrop-blur-xl bg-white/40 dark:bg-black/40 border border-white/20 dark:border-white/10;
   }
+
+  .animate-gradient-move {
+    background-size: 200% auto;
+    animation: gradientMove 3s linear infinite;
+  }
+
+  .animate-progress {
+    animation: progressMove 5s linear infinite;
+  }
+}
+
+@keyframes progressMove {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
 }
 
 /* Custom Scrollbar */

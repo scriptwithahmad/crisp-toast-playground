@@ -14,6 +14,7 @@ const Navbar = ({ theme, setTheme }) => (
         <a href="#features" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors hidden md:inline-block">Features</a>
         <a href="#playground" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors hidden md:inline-block">Playground</a>
         <a href="#guide" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors hidden md:inline-block">Guide</a>
+        <a href="#api" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors hidden md:inline-block">API</a>
         <div className="h-4 w-[1px] bg-border mx-1 hidden md:inline-block" />
         <a href="https://github.com/scriptwithahmad/Crisp-Toast-2.0" target="_blank" rel="noreferrer" className="p-2 hover:bg-accent rounded-full transition-colors text-muted-foreground hover:text-foreground">
           <Github size={20} />

@@ -68,6 +68,13 @@ const ApiReference = () => {
       tags: ['Dynamic']
     },
     {
+      name: 'pauseOnHover',
+      type: 'boolean',
+      defaultValue: 'true',
+      description: 'Whether to pause the auto-dismiss timer when the user hovers over the toast.',
+      tags: ['Behavior']
+    },
+    {
       name: 'icon',
       type: 'boolean | ReactNode',
       defaultValue: 'true',
@@ -80,6 +87,13 @@ const ApiReference = () => {
       defaultValue: 'undefined',
       description: 'Adds a call-to-action button inside the toast for immediate user interaction.',
       tags: ['Interactive']
+    },
+    {
+      name: 'endContent',
+      type: 'ReactNode',
+      defaultValue: 'undefined',
+      description: 'Custom JSX or content to be rendered as an additional block at the bottom of the toast.',
+      tags: ['Layout']
     }
   ]
 

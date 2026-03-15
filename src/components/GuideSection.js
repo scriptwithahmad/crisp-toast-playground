@@ -1,6 +1,5 @@
-import { Github, Sparkles } from 'lucide-react'
-import CodeBlock from './CodeBlock'
 import Banner from './Banner'
+import CodeBlock from './CodeBlock'
 
 const GuideSection = () => (
   <section id="guide" className="px-6 py-24 space-y-16">

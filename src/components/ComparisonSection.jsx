@@ -1,6 +1,5 @@
-import React from 'react';
 import { toast } from 'crisp-toast';
-import { Zap, ShieldCheck, ShieldAlert, Award, Package, Flame } from 'lucide-react';
+import { Award, Flame, Package, ShieldAlert, ShieldCheck, Zap } from 'lucide-react';
 
 const ComparisonSection = () => {
   const data = [

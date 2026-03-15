@@ -1,15 +1,13 @@
-import { useState, useEffect } from 'react'
 import 'crisp-toast/style.css'
+import { useEffect, useState } from 'react'
 import './index.css'
 
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
 import FeatureSection from './components/FeatureSection'
-import PlaygroundSection from './components/PlaygroundSection'
-import GuideSection from './components/GuideSection'
 import Footer from './components/Footer'
-import ComparisonSection from './components/ComparisonSection'
-import ToastShowcase from './components/ToastShowcase'
+import GuideSection from './components/GuideSection'
+import Hero from './components/Hero'
+import Navbar from './components/Navbar'
+import PlaygroundSection from './components/PlaygroundSection'
 
 function App() {
   const [theme, setTheme] = useState('dark')

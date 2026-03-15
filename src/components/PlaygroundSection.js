@@ -1,15 +1,25 @@
-import { useState } from 'react'
 import { toast } from 'crisp-toast'
 import {
-  Bell, CheckCircle2, XCircle, AlertTriangle, Info,
-  Palette, Layout, Timer, Settings2, Eye, Code2,
-  RefreshCw, Copy, Check, Sparkles, Zap,
-  Rocket,
-  Paintbrush,
+  AlertTriangle,
+  Bell,
+  Check,
+  CheckCircle2,
+  Code2,
+  Copy,
+  Eye,
+  Info,
+  Layout,
+  Palette,
+  RefreshCw,
+  Settings2,
+  Sparkles,
+  Timer,
+  XCircle,
+  Zap
 } from 'lucide-react'
-import CodeBlock from './CodeBlock'
+import { useState } from 'react'
 import useClipboard from '../hooks/useClipboard'
-import ToastShowcase from './ToastShowcase'
+import CodeBlock from './CodeBlock'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -270,104 +280,6 @@ const PlaygroundSection = () => {
     if (!config.icon) lines.push(`  icon: false,`)
     lines.push(`  darkMode: ${config.darkMode},`)
     return `${fn}({\n${lines.join('\n')}\n})`
-  }
-
-  const handlePreset = (id) => {
-    switch (id) {
-      case 'current':
-        fireToast()
-        break
-      case 'description':
-        toast.info({
-          title: 'Did you know?',
-          description: 'You can add detailed descriptions to provide more context to your users.',
-          variant: 'flat',
-          color: 'primary',
-          radius: 'lg'
-        })
-        break
-      case 'endContent':
-        toast.success({
-          title: 'Message Archived',
-          description: 'Your conversation has been moved to trash.',
-          variant: 'flat',
-          radius: 'lg',
-          endContent: (
-            <button
-              onClick={(e) => { e.stopPropagation(); console.log('Undo clicked'); }}
-              className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 rounded-md text-[10px] font-bold hover:bg-emerald-500/20 transition-colors uppercase tracking-wider"
-            >
-              Undo
-            </button>
-          )
-        })
-        break
-      case 'customIcon':
-        toast({
-          title: 'Blast Off!',
-          description: 'Customizing icons is seamless and fast.',
-          icon: <Rocket size={20} className="text-orange-500 animate-bounce" />,
-          variant: 'bordered',
-          radius: 'lg',
-          color: 'primary'
-        })
-        break
-      case 'styling':
-        toast({
-          title: 'Premium Glass',
-          description: 'Using custom CSS for a distinct look.',
-          variant: 'solid',
-          radius: '2xl',
-          style: {
-            background: 'rgba(15, 15, 15, 0.8)',
-            backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.05)',
-            color: '#fff'
-          }
-        })
-        break
-      case 'hiddenIcon':
-        toast.error({
-          title: 'Minimalist Error',
-          description: 'Icons can be hidden for a cleaner look.',
-          icon: false,
-          variant: 'flat',
-          color: 'danger',
-          radius: 'lg'
-        })
-        break
-      case 'mix':
-        toast({
-          title: 'The Works',
-          description: 'Gradient, animations, and custom placement.',
-          variant: 'solid',
-          radius: 'full',
-          placement: 'top-center',
-          style: {
-            background: 'linear-gradient(to right, #ec4899, #8b5cf6, #3b82f6)',
-            fontWeight: 'bold'
-          }
-        })
-        break
-      case 'async':
-        const promise = new Promise((resolve, reject) => {
-          setTimeout(() => {
-            Math.random() > 0.3 ? resolve() : reject()
-          }, 2000)
-        })
-        toast.promise(promise, {
-          loading: 'Uploading files...',
-          success: 'Files uploaded successfully!',
-          error: 'Upload failed. Please try again.',
-        }, {
-          variant: 'flat',
-          radius: 'lg',
-          darkMode: config.darkMode
-        })
-        break
-      default: break
-    }
   }
 
   return (

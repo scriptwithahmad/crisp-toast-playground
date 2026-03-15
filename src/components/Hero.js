@@ -1,15 +1,15 @@
 import { toast } from 'crisp-toast'
 import {
-  Terminal,
-  BookOpen,
-  Rocket,
-  CheckCircle2,
-  XCircle,
   AlertTriangle,
+  ArrowRight,
+  BookOpen,
+  CheckCircle2,
   Info,
   Loader2,
-  ArrowRight,
+  Rocket,
   Sparkles,
+  Terminal,
+  XCircle,
 } from 'lucide-react'
 import CodeBlock from './CodeBlock'
 

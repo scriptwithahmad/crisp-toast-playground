@@ -6,11 +6,10 @@ import {
   CheckCircle2,
   Info,
   Loader2,
-  Rocket,
   Sparkles,
   Terminal,
   XCircle,
-  Zap,
+  Zap
 } from 'lucide-react'
 
 const Hero = () => {

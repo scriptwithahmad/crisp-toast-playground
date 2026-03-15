@@ -1,18 +1,12 @@
-import React from 'react'
-import { 
-  Code2, 
-  Layers, 
-  Palette, 
-  MousePointer2, 
-  Maximize, 
-  Timer, 
-  Activity, 
-  Zap,
-  CheckCircle2,
-  XCircle,
+import {
+  Activity,
   AlertTriangle,
+  CheckCircle2,
+  Code2,
+  ExternalLink,
   Info,
-  ExternalLink
+  XCircle,
+  Zap
 } from 'lucide-react'
 
 const ApiReference = () => {

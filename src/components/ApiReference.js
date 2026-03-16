@@ -1,11 +1,7 @@
 import {
   Activity,
-  AlertTriangle,
-  CheckCircle2,
   Code2,
   ExternalLink,
-  Info,
-  XCircle,
   Zap
 } from 'lucide-react'
 
@@ -28,7 +24,7 @@ const ApiReference = () => {
     {
       name: 'variant',
       type: '"solid" | "bordered" | "flat"',
-      defaultValue: '"solid"',
+      defaultValue: '"flat"',
       description: 'Defines the visual style. Solid uses full background colors, bordered uses outlines, and flat uses subtle washes.',
       tags: ['Styling']
     },
@@ -202,11 +198,8 @@ const ApiReference = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { name: 'toast(opts)', desc: 'The architectural foundation for triggering generic notifications.', icon: Zap },
-                { name: 'toast.success(opts)', desc: 'semantic helper for positive feedback and completion states.', icon: CheckCircle2 },
-                { name: 'toast.error(opts)', desc: 'High-priority alerts for failures and critical system errors.', icon: XCircle },
-                { name: 'toast.warning(opts)', desc: 'Attention-grabbing messages for potential issues.', icon: AlertTriangle },
-                { name: 'toast.info(opts)', desc: 'Non-disruptive informational updates and news.', icon: Info },
+                { name: 'toast(opts)', desc: 'The architectural foundation for triggering generic notifications with custom colors.', icon: Zap },
+                { name: 'toast.loading(opts)', desc: 'Specialized method for indeterminate progress and wait states.', icon: Activity },
                 { name: 'toast.promise(p, msgs, ...) ', desc: 'The cleaner way to handle async request life-cycles.', icon: Activity },
               ].map((method, i) => (
                 <div key={i} className="group relative p-8 rounded-[2.5rem] bg-card/40 backdrop-blur-md border border-border/50 hover:border-primary/30 transition-all duration-500 overflow-hidden">

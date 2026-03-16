@@ -17,20 +17,20 @@ const Hero = () => {
     const title = type.charAt(0).toUpperCase() + type.slice(1) + ' Notification'
     const description = 'Bringing premium feedback to your app.'
     switch (type) {
-      case 'success': toast.success({ title, description, variant: 'flat', radius: 'lg' }); break
-      case 'error':   toast.error({ title, description, variant: 'flat', radius: 'lg', color: 'danger' });   break
-      case 'warning': toast.warning({ title, description, variant: 'flat', radius: 'lg' }); break
-      case 'info':    toast.info({ title, description, variant: 'flat', radius: 'lg', color: 'primary' });    break
+      case 'success': toast({ title, description, color: 'success', radius: 'lg' }); break
+      case 'error':   toast({ title, description, color: 'danger', radius: 'lg' });   break
+      case 'warning': toast({ title, description, color: 'warning', radius: 'lg' }); break
+      case 'info':    toast({ title, description, color: 'primary', radius: 'lg' });    break
       case 'loading': {
         const p = new Promise(resolve => setTimeout(resolve, 2000))
         toast.promise(p, { 
           loading: 'Processing...', 
           success: 'Done!',
           error: 'Failed' 
-        }, { variant: 'flat', radius: 'lg', description })
+        }, { radius: 'lg', description })
         break
       }
-      default: toast({ title: 'Default Notification', description, variant: 'flat', radius: 'lg' })
+      default: toast({ title: 'Default Notification', description, radius: 'lg' })
     }
   }
 

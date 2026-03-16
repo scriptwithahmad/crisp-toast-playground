@@ -1,4 +1,5 @@
-import { toast } from 'crisp-toast'
+import { toast, Toast } from 'crisp-toast'
+import { createRoot } from 'react-dom/client'
 import {
   AlertTriangle,
   Bell,
@@ -21,6 +22,14 @@ import {
 import { useState } from 'react'
 import useClipboard from '../hooks/useClipboard'
 import CodeBlock from './CodeBlock'
+
+// Register React renderer
+if (typeof window !== 'undefined') {
+  Toast.renderer = (node, container) => {
+    const root = createRoot(container);
+    root.render(node);
+  };
+}
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -165,7 +174,7 @@ const PlacementPicker = ({ value, onChange }) => {
     'bottom-left', 'bottom-center', 'bottom-right',
   ]
   return (
-    <div className="grid grid-cols-3 gap-1.5 w-full max-w-[200px]">
+    <div className="grid grid-cols-3 gap-1.5 w-full">
       {grid.map((p, i) => {
         if (!p) return (
           <div key={i} className={`h-8 rounded-md flex items-center justify-center text-[8px] font-bold uppercase tracking-widest text-muted-foreground/30 ${i === 4 ? 'border-2 border-dashed border-border/30' : ''}`}>
@@ -257,7 +266,7 @@ const PlaygroundSection = () => {
     const getAction = (preset) => {
       switch (preset) {
         case 'explore': return {
-          label: <button style={{ background: 'rgba(37,99,235,0.1)', color: '#2563eb', border: '1px solid #2563eb', borderRadius: '6px', padding: '4px 10px', fontSize: '10px', fontWeight: 'bold', cursor: 'pointer' }}>explore</button>,
+          label: <button style={{ background: 'rgba(255, 255, 255, 0.3)', color: 'black', borderRadius: '6px', padding: '4px 10px', fontSize: '10px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.3)' }}>Explore</button>,
           onClick: () => alert('Explore!')
         }
         case 'text': return { label: 'UNDO', onClick: () => alert('Undone!') }
@@ -299,12 +308,11 @@ const PlaygroundSection = () => {
       ...(merged.customIcon !== 'none' && { icon: merged.customIcon === 'rocket' ? '🚀' : <Sparkles size={16} /> }),
       ...(merged.icon === false && { icon: false }),
     }
-    switch (merged.type) {
-      case 'success': toast.success(opts); break
-      case 'error': toast.error(opts); break
-      case 'warning': toast.warning(opts); break
-      case 'info': toast.info(opts); break
-      default: toast(opts)
+    
+    if (merged.type === 'loading') {
+      toast.loading(opts)
+    } else {
+      toast(opts)
     }
   }
 
@@ -330,19 +338,19 @@ const PlaygroundSection = () => {
   }
 
   const generateCode = () => {
-    const fn = config.type === 'default' ? 'toast' : `toast.${config.type}`
+    const fn = config.type === 'loading' ? 'toast.loading' : 'toast'
     const lines = []
     lines.push(`  title: "${config.title}",`)
     if (config.description) lines.push(`  description: "${config.description}",`)
-    lines.push(`  variant: "${config.variant}",`)
-    lines.push(`  color: "${config.color}",`)
-    lines.push(`  placement: "${config.placement}",`)
-    lines.push(`  radius: "${config.radius}",`)
-    lines.push(`  duration: ${config.duration},`)
-    lines.push(`  progressBar: ${config.progressBar},`)
-    lines.push(`  pauseOnHover: ${config.pauseOnHover},`)
+    if (config.variant !== 'flat') lines.push(`  variant: "${config.variant}",`)
+    if (config.color !== 'default') lines.push(`  color: "${config.color}",`)
+    if (config.placement !== 'bottom-right') lines.push(`  placement: "${config.placement}",`)
+    if (config.radius !== 'md') lines.push(`  radius: "${config.radius}",`)
+    if (config.duration !== 3000) lines.push(`  duration: ${config.duration},`)
+    if (config.progressBar) lines.push(`  progressBar: ${config.progressBar},`)
+    if (config.pauseOnHover) lines.push(`  pauseOnHover: ${config.pauseOnHover},`)
     if (!config.icon) lines.push(`  icon: false,`)
-    lines.push(`  darkMode: ${config.darkMode},`)
+    if (!config.darkMode) lines.push(`  darkMode: ${config.darkMode},`)
     if (config.actionPreset === 'explore') {
       lines.push(`  action: {`)
       lines.push(`    label: <button>explore</button>,`)
@@ -420,7 +428,7 @@ const PlaygroundSection = () => {
 
                 <div className="space-y-2">
                   <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Message Content</span>
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 flex-col md:flex-row">
                     <input
                       type="text"
                       value={config.title}
@@ -444,7 +452,7 @@ const PlaygroundSection = () => {
             <div className="glass p-8 rounded-[2rem] border border-border shadow-2xl space-y-8">
               <SectionLabel icon={Palette}>Visual Identity</SectionLabel>
 
-              <div className="space-y-8">
+              <div className="space-y-4">
                 {/* Colors */}
                 <div className="flex flex-wrap gap-2.5">
                   {COLORS.map(color => {
@@ -726,7 +734,7 @@ const PlaygroundSection = () => {
 
             {/* Card 2: Rich Interactive */}
             <button
-              onClick={() => toast.info({
+              onClick={() => toast({
                 title: "Rich Interactive",
                 color: 'default',
                 pauseOnHover: true,
@@ -739,7 +747,7 @@ const PlaygroundSection = () => {
                     </div>
                   </div>
                 ),
-                customIcon: <Layers size={16} />
+                icon: <Layers size={16} />
               })}
               className="glass p-6 rounded-3xl border border-border hover:border-primary/40 transition-all text-left group active:scale-95"
             >

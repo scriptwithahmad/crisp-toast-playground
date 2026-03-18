@@ -8,11 +8,12 @@
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^13.5.0",
     "clsx": "^2.1.1",
-    "crisp-toast": "^1.0.8",
+    "crisp-toast": "^1.0.9",
     "lucide-react": "^0.577.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-scripts": "5.0.1",
+    "react-syntax-highlighter": "^16.1.1",
     "tailwind-merge": "^3.5.0",
     "tailwindcss-animate": "^1.0.7",
     "web-vitals": "^2.1.4"

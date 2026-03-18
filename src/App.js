@@ -1,7 +1,5 @@
-import { Toast } from 'crisp-toast'
 import 'crisp-toast/style.css'
 import { useEffect, useState } from 'react'
-import { createRoot } from 'react-dom/client'
 import './index.css'
 
 import FeatureSection from './components/FeatureSection'
@@ -11,12 +9,9 @@ import Hero from './components/Hero'
 import Navbar from './components/Navbar'
 import PlaygroundSection from './components/PlaygroundSection'
 import ApiReference from './components/ApiReference'
+import { toast } from 'crisp-toast';
+import 'crisp-toast/style.css';
 
-// Register React renderer for Crisp Toast
-Toast.renderer = (node, container) => {
-  const root = createRoot(container);
-  root.render(node);
-};
 
 function App() {
   const [theme, setTheme] = useState('dark')
@@ -29,6 +24,8 @@ function App() {
   return (
     <div className="min-h-screen bg-background selection:bg-primary/20 transition-colors duration-300">
       <Navbar theme={theme} setTheme={setTheme} />
+
+
       <main className="pt-16">
         <Hero />
         <FeatureSection />

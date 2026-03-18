@@ -1,5 +1,4 @@
-import { toast, Toast } from 'crisp-toast'
-import { createRoot } from 'react-dom/client'
+import { toast } from 'crisp-toast'
 import {
   AlertTriangle,
   Bell,
@@ -23,13 +22,6 @@ import { useState } from 'react'
 import useClipboard from '../hooks/useClipboard'
 import CodeBlock from './CodeBlock'
 
-// Register React renderer
-if (typeof window !== 'undefined') {
-  Toast.renderer = (node, container) => {
-    const root = createRoot(container);
-    root.render(node);
-  };
-}
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -104,7 +96,7 @@ const ToastPreview = ({ config }) => {
   // The library's buildClasses():
   // ["ct-toast", darkMode ? "ct-theme-dark" : "ct-theme-light",
   //  `ct-${variant}`, `ct-color-${color}`, `ct-radius-${radius}`]
-  const themeClass = config.darkMode ? 'ct-theme-dark' : 'ct-theme-light'
+  const themeClass = config.darkMode ? 'ct-theme-dark dark' : 'ct-theme-light light'
   const variantClass = `ct-${config.variant}`                 // ct-flat | ct-solid | ct-bordered
   const colorClass = `ct-color-${effectiveColor}`           // ct-color-success etc.
   const radiusClass = `ct-radius-${config.radius}`           // ct-radius-lg etc.
@@ -462,9 +454,9 @@ const PlaygroundSection = () => {
                       <button
                         key={color}
                         onClick={() => setAndFire('color', color)}
-                        className={`flex items-center gap-2 px-4 py-1.5 rounded-full border text-[11px] font-black uppercase tracking-tighter transition-all active:scale-90 ${isActive
-                          ? 'border-primary bg-primary/10 text-primary scale-105'
-                          : 'border-border bg-background/40 text-muted-foreground hover:border-primary/30'
+                        className={`flex items-center gap-2 px-4 py-1.5 rounded-full ring-1 text-[11px] font-black uppercase tracking-tight font-semibold transition-all active:scale-90 ${isActive
+                          ? 'ring-primary bg-primary/10 text-primary scale-105'
+                          : 'ring-border bg-background/40 text-muted-foreground hover:ring-primary/30'
                           }`}
                       >
                         <span className="w-2.5 h-2.5 rounded-full" style={{ background: bg }} />
@@ -689,7 +681,7 @@ const PlaygroundSection = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Card 1: Styled Content */}
-            <button
+            <div
               onClick={() => toast({
                 title: (
                   <div className="flex items-center gap-2">
@@ -711,7 +703,7 @@ const PlaygroundSection = () => {
                   </div>
                 ),
                 duration: 6000,
-                icon: <div className="p-2 bg-white/20 rounded-xl text-white shadow-inner"><Wand2 size={18} /></div>,
+                icon: <div className="p-2 bg-white/10 rounded-xl text-[blue] shadow-inner"><Wand2 size={18} /></div>,
                 customStyle: {
                   background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)',
                   border: '1px solid rgba(255,255,255,0.3)',
@@ -719,8 +711,20 @@ const PlaygroundSection = () => {
                   padding: '20px'
                 }
               })}
-              className="glass p-6 rounded-3xl border border-border hover:border-primary/40 transition-all text-left group active:scale-95"
+              className="glass p-6 rounded-3xl border border-border hover:border-primary/40 transition-all text-left group active:scale-95 cursor-pointer relative"
             >
+
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  copy(`toast({\n  title: (\n    <div className="flex items-center gap-2">\n      <span className="font-black text-white">Full Customization</span>\n      <span className="px-1.5 py-0.5 rounded-full bg-white/20 text-[8px] font-black text-white uppercase tracking-widest">Premium</span>\n    </div>\n  ),\n  description: (\n    <div className="space-y-2 mt-1">\n      <p className="text-[11px] text-white/90 leading-relaxed font-medium">\n        Custom gradients, white thematic text, and advanced JSX nesting for maximum control.\n      </p>\n      <div className="flex items-center gap-2 pt-1">\n         <div className="h-1 flex-1 bg-white/20 rounded-full overflow-hidden">\n            <div className="h-full bg-white w-[75%] animate-pulse" />\n         </div>\n         <span className="text-[9px] text-white/70 font-black">75%</span>\n      </div>\n    </div>\n  ),\n  duration: 6000,\n  icon: <div className="p-2 bg-white/20 rounded-xl text-white shadow-inner"><Wand2 size={18} /></div>,\n  customStyle: {\n    background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)',\n    border: '1px solid rgba(255,255,255,0.3)',\n    boxShadow: '0 25px 50px -12px rgba(168, 85, 247, 0.4)',\n    padding: '20px'\n  }\n})`);
+                  toast.success({ title: 'Config Copied!', duration: 2000, placement: 'bottom-right' });
+                }}
+                className="absolute top-4 right-4 p-2 rounded-xl bg-background/50 border border-border text-muted-foreground hover:text-primary transition-colors opacity-0 group-hover:opacity-100"
+                title="Copy config"
+              >
+                <Copy size={14} />
+              </button>
               <div className="flex items-start gap-4">
                 <div className="p-3 rounded-2xl bg-purple-500/10 text-purple-500 group-hover:scale-110 transition-transform">
                   <Wand2 size={24} />
@@ -730,10 +734,10 @@ const PlaygroundSection = () => {
                   <p className="text-xs text-muted-foreground leading-relaxed">Custom colors, JSX content, gradients, and full css control.</p>
                 </div>
               </div>
-            </button>
+            </div>
 
             {/* Card 2: Rich Interactive */}
-            <button
+            <div
               onClick={() => toast({
                 title: "Rich Interactive",
                 color: 'default',
@@ -747,10 +751,21 @@ const PlaygroundSection = () => {
                     </div>
                   </div>
                 ),
-                icon: <Layers size={16} />
+                icon: <Layers size={18} />,
               })}
-              className="glass p-6 rounded-3xl border border-border hover:border-primary/40 transition-all text-left group active:scale-95"
+              className="glass p-6 rounded-3xl border border-border hover:border-primary/40 transition-all text-left group active:scale-95 cursor-pointer relative"
             >
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  copy(`toast({\n  title: "Rich Interactive",\n  color: 'default',\n  pauseOnHover: true,\n  description: (\n    <div className="flex flex-col gap-3 mt-1">\n      <p className="text-[11px] opacity-80">Toasts containing inputs, multiple buttons, and callbacks.</p>\n      <div className="flex gap-2">\n        <input type="text" placeholder="Verify code..." className="flex-1 bg-muted/60 border border-border rounded-lg px-2 py-1.5 text-[10px] outline-none focus:ring-1 focus:ring-primary" />\n        <button onClick={(e) => { e.stopPropagation(); alert('Verified!'); }} className="bg-primary text-black px-3 py-1.5 rounded-lg text-[10px] font-bold">Check</button>\n      </div>\n    </div>\n  ),\n  icon: <Layers size={16} />\n})`);
+                  toast.success({ title: 'Config Copied!', duration: 2000, placement: 'bottom-right' });
+                }}
+                className="absolute top-4 right-4 p-2 rounded-xl bg-background/50 border border-border text-muted-foreground hover:text-primary transition-colors opacity-0 group-hover:opacity-100"
+                title="Copy config"
+              >
+                <Copy size={14} />
+              </button>
               <div className="flex items-start gap-4">
                 <div className="p-3 rounded-2xl bg-blue-500/10 text-blue-500 group-hover:scale-110 transition-transform">
                   <Layers size={24} />
@@ -760,10 +775,10 @@ const PlaygroundSection = () => {
                   <p className="text-xs text-muted-foreground leading-relaxed">Toasts containing inputs, multiple action buttons, and callbacks.</p>
                 </div>
               </div>
-            </button>
+            </div>
 
             {/* Card 3: Async Process */}
-            <button
+            <div
               onClick={() => {
                 const p = new Promise(resolve => setTimeout(resolve, 2000))
                 toast.promise(p, {
@@ -772,8 +787,19 @@ const PlaygroundSection = () => {
                   error: 'Failed'
                 }, { variant: 'flat', radius: 'lg', description: "Your file has been processed successfully." })
               }}
-              className="glass p-6 rounded-3xl border border-border hover:border-primary/40 transition-all text-left group active:scale-95"
+              className="glass p-6 rounded-3xl border border-border hover:border-primary/40 transition-all text-left group active:scale-95 cursor-pointer relative"
             >
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  copy(`const p = new Promise(resolve => setTimeout(resolve, 2000))\ntoast.promise(p, {\n  loading: 'Processing...',\n  success: 'Done!',\n  error: 'Failed'\n}, { variant: 'flat', radius: 'lg', description: "Your file has been processed successfully." })`);
+                  toast.success({ title: 'Config Copied!', duration: 2000, placement: 'bottom-right' });
+                }}
+                className="absolute top-4 right-4 p-2 rounded-xl bg-background/50 border border-border text-muted-foreground hover:text-primary transition-colors opacity-0 group-hover:opacity-100"
+                title="Copy config"
+              >
+                <Copy size={14} />
+              </button>
               <div className="flex items-start gap-4">
                 <div className="p-3 rounded-2xl bg-emerald-500/10 text-emerald-500 group-hover:scale-110 transition-transform">
                   <RotateCcw size={24} />
@@ -783,7 +809,7 @@ const PlaygroundSection = () => {
                   <p className="text-xs text-muted-foreground leading-relaxed">Update content and progress bars on the fly via toast ID.</p>
                 </div>
               </div>
-            </button>
+            </div>
           </div>
         </div>
       </div>

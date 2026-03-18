@@ -14,26 +14,29 @@ const GuideSection = () => (
           {
             step: 1, title: 'Install Dependencies',
             desc: 'Run this in your project root to fetch the package.',
-            code: 'npm install crisp-toast'
+            code: 'npm install crisp-toast',
+            lang: 'bash'
           },
           {
             step: 2, title: 'Import & Configure',
             desc: 'Import the toast function and the global stylesheet.',
-            code: `import { toast } from "crisp-toast"\nimport "crisp-toast/style.css"`
+            code: `import { toast } from "crisp-toast"\nimport "crisp-toast/style.css"`,
+            lang: 'javascript'
           },
           {
             step: 3, title: 'Universal Usage',
             desc: 'Trigger notifications from anywhere in your application.',
-            code: `// Simple toast\ntoast("Hello World")\n\n// Featured toast\ntoast.success({\n  title: "Success",\n  description: "Changes applied!",\n  progressBar: true\n})`
+            code: `// Simple toast\ntoast("Hello World")\n\n// Featured toast\ntoast({\n  title: "Success",\n  description: "Changes applied!",\n  progressBar: true\n})`,
+            lang: 'javascript'
           }
-        ].map(({ step, title, desc, code }) => (
+        ].map(({ step, title, desc, code, lang }) => (
           <div key={step} className="flex flex-col gap-6">
             <div className="flex items-center gap-4">
               <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm flex-shrink-0">{step}</div>
               <h3 className="font-bold text-xl tracking-tight">{title}</h3>
             </div>
             <p className="text-muted-foreground pl-12 -mt-4">{desc}</p>
-            <div className="pl-12"><CodeBlock code={code} /></div>
+            <div className="pl-12"><CodeBlock code={code} language={lang || 'javascript'} /></div>
           </div>
         ))}
       </div>

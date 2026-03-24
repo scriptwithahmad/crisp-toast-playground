@@ -9,9 +9,6 @@ import Hero from './components/Hero'
 import Navbar from './components/Navbar'
 import PlaygroundSection from './components/PlaygroundSection'
 import ApiReference from './components/ApiReference'
-import { toast } from 'crisp-toast';
-import 'crisp-toast/style.css';
-
 
 function App() {
   const [theme, setTheme] = useState('dark')

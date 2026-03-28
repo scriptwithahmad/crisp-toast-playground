@@ -3,6 +3,7 @@ import {
   AlertTriangle,
   Bell,
   CheckCircle2,
+  Star,
   Code2,
   Copy,
   Info,
@@ -16,9 +17,13 @@ import {
   Timer,
   Wand2,
   XCircle,
-  Zap
+  Zap,
+  Flame,
+  Heart,
+  Smile,
+  ThumbsUp
 } from 'lucide-react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import useClipboard from '../hooks/useClipboard'
 import CodeBlock from './CodeBlock'
 
@@ -37,6 +42,17 @@ const COLOR_META = {
 
 const VARIANTS = ['flat', 'solid', 'bordered']
 const RADIUSES = ['none', 'sm', 'md', 'lg', 'full']
+
+const CUSTOM_ICONS = [
+  { id: 'none', label: 'Standard', node: null },
+  { id: 'rocket', label: 'Rocket', node: '🚀' },
+  { id: 'sparkle', label: 'Sparkle', node: <Sparkles size={14} /> },
+  { id: 'star', label: 'Star', node: <Star size={14} /> },
+  { id: 'flame', label: 'Flame', node: <Flame size={14} /> },
+  { id: 'heart', label: 'Heart', node: <Heart size={14} /> },
+  { id: 'smile', label: 'Smile', node: <Smile size={14} /> },
+  { id: 'thumbs-up', label: 'Thumbs Up', node: <ThumbsUp size={14} /> },
+]
 const TYPES = ['default', 'success', 'error', 'warning', 'info']
 
 const TYPE_META = {
@@ -86,8 +102,10 @@ const ToastPreview = ({ config }) => {
       : config.type  // success | warning | info
 
   const getPreviewIcon = () => {
-    if (config.customIcon === 'rocket') return '🚀'
-    if (config.customIcon === 'sparkle') return <Sparkles size={16} />
+    const custom = CUSTOM_ICONS.find(c => c.id === config.customIcon);
+    if (custom && custom.id !== 'none') {
+      return custom.id === 'rocket' ? custom.node : React.cloneElement(custom.node, { size: 16 });
+    }
     return CT_ICONS[iconKey] ?? CT_ICONS.default
   }
 
@@ -244,6 +262,7 @@ const PlaygroundSection = () => {
     actionPreset: 'none',
     endContentPreset: 'none',
     customIcon: 'none',
+    maxVisibleToasts: 5,
   })
   const [activeTab, setActiveTab] = useState('preview')
   const [copied, copy] = useClipboard()
@@ -295,9 +314,10 @@ const PlaygroundSection = () => {
       progressBar: merged.progressBar,
       darkMode: merged.darkMode,
       pauseOnHover: merged.pauseOnHover,
+      maxVisibleToasts: merged.maxVisibleToasts,
       action: getAction(merged.actionPreset),
       endContent: getEndContent(merged.endContentPreset),
-      ...(merged.customIcon !== 'none' && { icon: merged.customIcon === 'rocket' ? '🚀' : <Sparkles size={16} /> }),
+      ...(merged.customIcon !== 'none' && { icon: CUSTOM_ICONS.find(c => c.id === merged.customIcon)?.id === 'rocket' ? '🚀' : React.cloneElement(CUSTOM_ICONS.find(c => c.id === merged.customIcon)?.node, { size: 16 }) }),
       ...(merged.icon === false && { icon: false }),
     }
     
@@ -339,6 +359,7 @@ const PlaygroundSection = () => {
     if (config.placement !== 'bottom-right') lines.push(`  placement: "${config.placement}",`)
     if (config.radius !== 'md') lines.push(`  radius: "${config.radius}",`)
     if (config.duration !== 3000) lines.push(`  duration: ${config.duration},`)
+    if (config.maxVisibleToasts !== 5) lines.push(`  maxVisibleToasts: ${config.maxVisibleToasts},`)
     if (config.progressBar) lines.push(`  progressBar: ${config.progressBar},`)
     if (config.pauseOnHover) lines.push(`  pauseOnHover: ${config.pauseOnHover},`)
     if (!config.icon) lines.push(`  icon: false,`)
@@ -411,7 +432,7 @@ const PlaygroundSection = () => {
                             }`}
                         >
                           <Icon size={16} />
-                          <span className={`text-[10px] font-black text-muted-foreground uppercase tracking-widest pl-1 ${isActive ? 'text-primary-foreground' : 'text-muted-foreground'}`}>{type}</span>
+                          <span className={`md:block hidden text-[10px] font-black text-muted-foreground uppercase tracking-widest pl-1 ${isActive ? 'text-primary-foreground' : 'text-muted-foreground'}`}>{type}</span>
                         </button>
                       )
                     })}
@@ -559,19 +580,20 @@ const PlaygroundSection = () => {
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest pl-1">Icon Customization</span>
-                <div className="flex gap-2 p-1 bg-muted/30 rounded-2xl border border-border w-fit min-w-[300px]">
-                  {['none', 'rocket', 'sparkle'].map(icon => (
+              <div className="space-y-3 relative">
+                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest pl-1 sticky left-0">Icon Customization</span>
+                <div className="flex gap-2 p-1 bg-muted/30 rounded-2xl border border-border w-full overflow-x-auto hide-scrollbar">
+                  {CUSTOM_ICONS.map(icon => (
                     <button
-                      key={icon}
-                      onClick={() => setAndFire('customIcon', icon)}
-                      className={`flex-1 py-2 px-4 text-[11px] font-bold rounded-xl capitalize transition-all flex items-center justify-center gap-2 ${config.customIcon === icon
+                      key={icon.id}
+                      onClick={() => setAndFire('customIcon', icon.id)}
+                      className={`flex-none py-2 px-4 text-[11px] font-bold rounded-xl capitalize transition-all flex items-center justify-center gap-2 ${config.customIcon === icon.id
                         ? 'bg-background text-primary shadow-sm ring-1 ring-border'
                         : 'text-muted-foreground hover:text-foreground'
                         }`}
                     >
-                      {icon === 'none' ? 'Standard' : icon === 'rocket' ? '🚀' : <><Sparkles size={14} /> Sparkle</>}
+                      {icon.id === 'rocket' ? null : icon.node}
+                      {icon.id === 'rocket' ? '🚀 Rocket' : icon.label}
                     </button>
                   ))}
                 </div>
@@ -643,6 +665,19 @@ const PlaygroundSection = () => {
                       type="range" min="1000" max="10000" step="500"
                       value={config.duration}
                       onChange={e => set('duration', parseInt(e.target.value))}
+                      className="w-full h-1.5 bg-primary/20 rounded-full appearance-none cursor-pointer accent-primary"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-[10px] font-black text-primary/60 uppercase tracking-wide">
+                      <span>Max Stacked Toasts</span>
+                      <span>{config.maxVisibleToasts}</span>
+                    </div>
+                    <input
+                      type="range" min="1" max="10" step="1"
+                      value={config.maxVisibleToasts}
+                      onChange={e => set('maxVisibleToasts', parseInt(e.target.value))}
                       className="w-full h-1.5 bg-primary/20 rounded-full appearance-none cursor-pointer accent-primary"
                     />
                   </div>

@@ -72,10 +72,17 @@ const ApiReference = () => {
     },
     {
       name: 'icon',
-      type: 'boolean | ReactNode',
+      type: 'ReactNode | boolean',
       defaultValue: 'true',
-      description: 'Show/hide the default semantic icon or provide your own custom React component.',
+      description: 'Show/hide the default semantic icon or provide your own custom React component (like Lucide Icons or raw SVGs).',
       tags: ['Optional']
+    },
+    {
+      name: 'maxVisibleToasts',
+      type: 'number',
+      defaultValue: '5',
+      description: 'Controls how many overlapping toasts are rendered at once in the stack before fading out.',
+      tags: ['Layout']
     },
     {
       name: 'action',

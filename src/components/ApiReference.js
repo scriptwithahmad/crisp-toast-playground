@@ -97,6 +97,13 @@ const ApiReference = () => {
       defaultValue: 'undefined',
       description: 'Custom JSX or content to be rendered as an additional block at the bottom of the toast.',
       tags: ['Layout']
+    },
+    {
+      name: 'className',
+      type: 'string',
+      defaultValue: 'undefined',
+      description: 'Custom CSS class to apply to the toast container for global style overrides.',
+      tags: ['Styling']
     }
   ]
 

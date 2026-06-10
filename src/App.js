@@ -26,7 +26,7 @@ function App() {
       <main className="pt-16">
         <Hero />
         <FeatureSection />
-        <PlaygroundSection />
+        <PlaygroundSection theme={theme} />
         <GuideSection />
         <ApiReference />
         {/* <ComparisonSection /> */}

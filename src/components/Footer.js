@@ -3,8 +3,8 @@ const Footer = () => (
     <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
       <div className="flex flex-col items-center md:items-start gap-3">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-md bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">
-            <img className='w-4' src="/logo.png" alt="logo here" />
+          <div className="w-6 h-6 rounded-md bg-slate-100 dark:bg-white/10 border border-black/5 dark:border-white/10 flex items-center justify-center font-bold text-sm">
+            <img className='w-4' src="/logo.png" alt="logo" />
           </div>
           <span className="font-bold tracking-tight">Crisp Toast</span>
         </div>

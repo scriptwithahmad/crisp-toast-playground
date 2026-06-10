@@ -87,9 +87,97 @@ const CloseIcon = () => (
 // The library's style.css (already imported globally) drives all the colours,
 // backgrounds, borders, shadows and typography — we just apply the same classes.
 
+// const ToastPreview = ({ config }) => {
+//   // In crisp-toast, typed toasts (success, error, etc.) use specific default colors.
+//   // We calculate the effective color to ensure the preview matches the actual library behavior.
+//   const effectiveColor = config.type === 'success' ? 'success'
+//     : config.type === 'error' ? 'danger'
+//       : config.type === 'warning' ? 'warning'
+//         : config.type === 'info' ? 'primary'
+//           : config.color
+
+//   // Map toast type to the color key the library uses for the icon lookup
+//   const iconKey = config.type === 'error' ? 'danger'
+//     : config.type === 'default' ? (config.color === 'default' ? 'default' : config.color)
+//       : config.type  // success | warning | info
+
+//   const getPreviewIcon = () => {
+//     const custom = CUSTOM_ICONS.find(c => c.id === config.customIcon);
+//     if (custom && custom.id !== 'none') {
+//       return custom.id === 'rocket' ? custom.node : React.cloneElement(custom.node, { size: 16 });
+//     }
+//     return CT_ICONS[iconKey] ?? CT_ICONS.default
+//   }
+
+//   const icon = getPreviewIcon()
+
+//   // The library's buildClasses():
+//   // ["ct-toast", darkMode ? "ct-theme-dark" : "ct-theme-light",
+//   //  `ct-${variant}`, `ct-color-${color}`, `ct-radius-${radius}`]
+//   const themeClass = config.darkMode ? 'ct-theme-dark dark' : 'ct-theme-light light'
+//   const variantClass = `ct-${config.variant}`                 // ct-flat | ct-solid | ct-bordered
+//   const colorClass = `ct-color-${effectiveColor}`           // ct-color-success etc.
+//   const radiusClass = `ct-radius-${config.radius}`           // ct-radius-lg etc.
+
+//   return (
+//     <div
+//       className={`ct-toast ${themeClass} ${variantClass} ${colorClass} ${radiusClass}`}
+//       style={{ position: 'relative', minWidth: 0, maxWidth: '100%', animation: 'none' }}
+//     >
+//       <div className="ct-body">
+//         {/* Icon */}
+//         {config.icon !== false && (
+//           <div className="ct-icon">
+//             {icon}
+//           </div>
+//         )}
+
+//         {/* Content */}
+//         <div className="ct-content">
+//           <div className="ct-title">{config.title || 'Toast Title'}</div>
+//           {config.description && (
+//             <div className="ct-description">{config.description}</div>
+//           )}
+//         </div>
+
+//         {/* Actions (Decorative) */}
+//         <div className="ct-actions">
+//           {config.actionPreset !== 'none' && (
+//             <div className="ct-action-wrapper" style={{ opacity: 0.8 }}>
+//               {config.actionPreset === 'explore' ? (
+//                 <button className="px-2 py-1 border border-primary/30 text-primary rounded-md text-[10px] font-bold">explore</button>
+//               ) : 'UNDO'}
+//             </div>
+//           )}
+//           <button className="ct-close" tabIndex={-1} aria-hidden="true">
+//             <CloseIcon />
+//           </button>
+//         </div>
+//       </div>
+
+//       {/* endContent */}
+//       {config.endContentPreset !== 'none' && (
+//         <div className="ct-end-content">
+//           {config.endContentPreset === 'upgrade' && <button className="w-full py-2 px-3 bg-primary text-primary-foreground rounded-lg text-[10px] font-bold mt-1 uppercase tracking-wider">Upgrade to Pro ✨</button>}
+//           {config.endContentPreset === 'undo' && <div className="flex items-center gap-2 p-2 bg-muted/40 rounded-lg w-full text-[10px]"><span className="opacity-60 font-bold uppercase tracking-tighter">Mistake?</span> <button className="text-primary font-bold uppercase">Undo</button></div>}
+//           {config.endContentPreset === 'emoji' && <div className="text-lg py-1">🚀 🔥 🎉 💎</div>}
+//         </div>
+//       )}
+
+//       {/* Progress bar */}
+//       {config.progressBar && (
+//         <div
+//           className="ct-progress-bar"
+//           style={{ animation: 'none', width: '55%' }}
+//         />
+//       )}
+//     </div>
+//   )
+// }
+
+// ─── Toast Preview — uses EXACT crisp-toast CSS classes ───────────────────────
 const ToastPreview = ({ config }) => {
   // In crisp-toast, typed toasts (success, error, etc.) use specific default colors.
-  // We calculate the effective color to ensure the preview matches the actual library behavior.
   const effectiveColor = config.type === 'success' ? 'success'
     : config.type === 'error' ? 'danger'
       : config.type === 'warning' ? 'warning'
@@ -111,20 +199,25 @@ const ToastPreview = ({ config }) => {
 
   const icon = getPreviewIcon()
 
-  // The library's buildClasses():
-  // ["ct-toast", darkMode ? "ct-theme-dark" : "ct-theme-light",
-  //  `ct-${variant}`, `ct-color-${color}`, `ct-radius-${radius}`]
   const themeClass = config.darkMode ? 'ct-theme-dark dark' : 'ct-theme-light light'
-  const variantClass = `ct-${config.variant}`                 // ct-flat | ct-solid | ct-bordered
-  const colorClass = `ct-color-${effectiveColor}`           // ct-color-success etc.
-  const radiusClass = `ct-radius-${config.radius}`           // ct-radius-lg etc.
+  const variantClass = `ct-${config.variant}`
+  const colorClass = `ct-color-${effectiveColor}`
+  const radiusClass = `ct-radius-${config.radius}`
+
+  const isSingleLine = (!!config.title && !config.description) || (!config.title && !!config.description) || (!config.title && !config.description);
+  const bodyClass = `ct-body${isSingleLine ? ' ct-body-centered' : ''}`;
 
   return (
     <div
-      className={`ct-toast ${themeClass} ${variantClass} ${colorClass} ${radiusClass}`}
-      style={{ position: 'relative', minWidth: 0, maxWidth: '100%', animation: 'none' }}
+      className={`ct-toast ${themeClass} ${variantClass} ${colorClass} ${radiusClass} ${config.className || ''}`}
+      style={{
+        position: 'relative',
+        minWidth: 0,
+        maxWidth: '100%',
+        animation: 'none'
+      }}
     >
-      <div className="ct-body">
+      <div className={bodyClass}>
         {/* Icon */}
         {config.icon !== false && (
           <div className="ct-icon">
@@ -134,9 +227,13 @@ const ToastPreview = ({ config }) => {
 
         {/* Content */}
         <div className="ct-content">
-          <div className="ct-title">{config.title || 'Toast Title'}</div>
+          <div className="ct-title">
+            {config.title || 'Toast Title'}
+          </div>
           {config.description && (
-            <div className="ct-description">{config.description}</div>
+            <div className="ct-description">
+              {config.description}
+            </div>
           )}
         </div>
 
@@ -158,8 +255,17 @@ const ToastPreview = ({ config }) => {
       {/* endContent */}
       {config.endContentPreset !== 'none' && (
         <div className="ct-end-content">
-          {config.endContentPreset === 'upgrade' && <button className="w-full py-2 px-3 bg-primary text-primary-foreground rounded-lg text-[10px] font-bold mt-1 uppercase tracking-wider">Upgrade to Pro ✨</button>}
-          {config.endContentPreset === 'undo' && <div className="flex items-center gap-2 p-2 bg-muted/40 rounded-lg w-full text-[10px]"><span className="opacity-60 font-bold uppercase tracking-tighter">Mistake?</span> <button className="text-primary font-bold uppercase">Undo</button></div>}
+          {config.endContentPreset === 'upgrade' && (
+            <button className="w-full py-2 px-3 bg-primary text-primary-foreground rounded-lg text-[10px] font-bold mt-1 uppercase tracking-wider">
+              Upgrade to Pro ✨
+            </button>
+          )}
+          {config.endContentPreset === 'undo' && (
+            <div className="flex items-center gap-2 p-2 bg-muted/40 rounded-lg w-full text-[10px]">
+              <span className="opacity-60 font-bold uppercase tracking-tighter">Mistake?</span>
+              <button className="text-primary font-bold uppercase">Undo</button>
+            </div>
+          )}
           {config.endContentPreset === 'emoji' && <div className="text-lg py-1">🚀 🔥 🎉 💎</div>}
         </div>
       )}
@@ -245,7 +351,7 @@ const SectionLabel = ({ icon: Icon, children, hint }) => (
 
 // ─── Playground Section ───────────────────────────────────────────────────────
 
-const PlaygroundSection = () => {
+const PlaygroundSection = ({ theme }) => {
   const [config, setConfig] = useState({
     type: 'success',
     title: 'Changes saved!',
@@ -257,15 +363,20 @@ const PlaygroundSection = () => {
     duration: 5000,
     progressBar: true,
     icon: true,
-    darkMode: true,
+    darkMode: theme === 'dark',
     pauseOnHover: false,
     actionPreset: 'none',
     endContentPreset: 'none',
     customIcon: 'none',
     maxVisibleToasts: 5,
+    className: ''
   })
   const [activeTab, setActiveTab] = useState('preview')
   const [copied, copy] = useClipboard()
+
+  React.useEffect(() => {
+    setConfig(prev => ({ ...prev, darkMode: theme === 'dark' }));
+  }, [theme]);
 
   // Update a single key in config (for global options — no toast fired)
   const set = (key, val) => setConfig(prev => ({ ...prev, [key]: val }))
@@ -315,12 +426,13 @@ const PlaygroundSection = () => {
       darkMode: merged.darkMode,
       pauseOnHover: merged.pauseOnHover,
       maxVisibleToasts: merged.maxVisibleToasts,
+      className: merged.className,
       action: getAction(merged.actionPreset),
       endContent: getEndContent(merged.endContentPreset),
       ...(merged.customIcon !== 'none' && { icon: CUSTOM_ICONS.find(c => c.id === merged.customIcon)?.id === 'rocket' ? '🚀' : React.cloneElement(CUSTOM_ICONS.find(c => c.id === merged.customIcon)?.node, { size: 16 }) }),
       ...(merged.icon === false && { icon: false }),
     }
-    
+
     if (merged.type === 'loading') {
       toast.loading(opts)
     } else {
@@ -377,6 +489,9 @@ const PlaygroundSection = () => {
     }
     if (config.customIcon !== 'none') {
       lines.push(`  icon: ${config.customIcon === 'rocket' ? '"🚀"' : '<JSX />'},`)
+    }
+    if (config.className) {
+      lines.push(`  className: "${config.className}",`)
     }
     return `${fn}({\n${lines.join('\n')}\n})`
   }
@@ -688,6 +803,16 @@ const PlaygroundSection = () => {
                     <ToggleChip label="Dark UI" checked={config.darkMode} onChange={v => set('darkMode', v)} />
                     <ToggleChip label="Pause On Hover" checked={config.pauseOnHover} onChange={v => set('pauseOnHover', v)} />
                   </div>
+                  <div className="space-y-2">
+                    <span className="text-[10px] font-black text-primary/60 uppercase tracking-wide block pl-1">Override Class</span>
+                    <input
+                      type="text"
+                      value={config.className}
+                      onChange={e => set('className', e.target.value)}
+                      placeholder="e.g. my-custom-toast"
+                      className="w-full bg-background/50 border border-primary/20 rounded-xl px-3 py-2 text-[11px] font-black focus:ring-2 focus:ring-primary/20 focus:border-primary/40 outline-none transition-all placeholder:text-muted-foreground/30"
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-3">
@@ -730,15 +855,15 @@ const PlaygroundSection = () => {
                       Custom gradients, white thematic text, and advanced JSX nesting for maximum control.
                     </p>
                     <div className="flex items-center gap-2 pt-1">
-                       <div className="h-1 flex-1 bg-white/20 rounded-full overflow-hidden">
-                          <div className="h-full bg-white w-[75%] animate-pulse" />
-                       </div>
-                       <span className="text-[9px] text-white/70 font-black">75%</span>
+                      <div className="h-1 flex-1 bg-white/20 rounded-full overflow-hidden">
+                        <div className="h-full bg-white w-[75%] animate-pulse" />
+                      </div>
+                      <span className="text-[9px] text-white/70 font-black">75%</span>
                     </div>
                   </div>
                 ),
                 duration: 6000,
-                icon: <div className="p-2 bg-white/10 rounded-xl text-[blue] shadow-inner"><Wand2 size={18} /></div>,
+                icon: <div className="p-2 bg-white/20 text-white rounded-xl shadow-inner"><Wand2 size={18} /></div>,
                 customStyle: {
                   background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)',
                   border: '1px solid rgba(255,255,255,0.3)',
@@ -749,7 +874,7 @@ const PlaygroundSection = () => {
               className="glass p-6 rounded-3xl border border-border hover:border-primary/40 transition-all text-left group active:scale-95 cursor-pointer relative"
             >
 
-              <button 
+              <button
                 onClick={(e) => {
                   e.stopPropagation();
                   copy(`toast({\n  title: (\n    <div className="flex items-center gap-2">\n      <span className="font-black text-white">Full Customization</span>\n      <span className="px-1.5 py-0.5 rounded-full bg-white/20 text-[8px] font-black text-white uppercase tracking-widest">Premium</span>\n    </div>\n  ),\n  description: (\n    <div className="space-y-2 mt-1">\n      <p className="text-[11px] text-white/90 leading-relaxed font-medium">\n        Custom gradients, white thematic text, and advanced JSX nesting for maximum control.\n      </p>\n      <div className="flex items-center gap-2 pt-1">\n         <div className="h-1 flex-1 bg-white/20 rounded-full overflow-hidden">\n            <div className="h-full bg-white w-[75%] animate-pulse" />\n         </div>\n         <span className="text-[9px] text-white/70 font-black">75%</span>\n      </div>\n    </div>\n  ),\n  duration: 6000,\n  icon: <div className="p-2 bg-white/20 rounded-xl text-white shadow-inner"><Wand2 size={18} /></div>,\n  customStyle: {\n    background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)',\n    border: '1px solid rgba(255,255,255,0.3)',\n    boxShadow: '0 25px 50px -12px rgba(168, 85, 247, 0.4)',\n    padding: '20px'\n  }\n})`);
@@ -790,7 +915,7 @@ const PlaygroundSection = () => {
               })}
               className="glass p-6 rounded-3xl border border-border hover:border-primary/40 transition-all text-left group active:scale-95 cursor-pointer relative"
             >
-              <button 
+              <button
                 onClick={(e) => {
                   e.stopPropagation();
                   copy(`toast({\n  title: "Rich Interactive",\n  color: 'default',\n  pauseOnHover: true,\n  description: (\n    <div className="flex flex-col gap-3 mt-1">\n      <p className="text-[11px] opacity-80">Toasts containing inputs, multiple buttons, and callbacks.</p>\n      <div className="flex gap-2">\n        <input type="text" placeholder="Verify code..." className="flex-1 bg-muted/60 border border-border rounded-lg px-2 py-1.5 text-[10px] outline-none focus:ring-1 focus:ring-primary" />\n        <button onClick={(e) => { e.stopPropagation(); alert('Verified!'); }} className="bg-primary text-black px-3 py-1.5 rounded-lg text-[10px] font-bold">Check</button>\n      </div>\n    </div>\n  ),\n  icon: <Layers size={16} />\n})`);
@@ -824,7 +949,7 @@ const PlaygroundSection = () => {
               }}
               className="glass p-6 rounded-3xl border border-border hover:border-primary/40 transition-all text-left group active:scale-95 cursor-pointer relative"
             >
-              <button 
+              <button
                 onClick={(e) => {
                   e.stopPropagation();
                   copy(`const p = new Promise(resolve => setTimeout(resolve, 2000))\ntoast.promise(p, {\n  loading: 'Processing...',\n  success: 'Done!',\n  error: 'Failed'\n}, { variant: 'flat', radius: 'lg', description: "Your file has been processed successfully." })`);
@@ -836,7 +961,7 @@ const PlaygroundSection = () => {
                 <Copy size={14} />
               </button>
               <div className="flex items-start gap-4">
-                <div className="p-3 rounded-2xl bg-emerald-500/10 text-emerald-500 group-hover:scale-110 transition-transform">
+                <div className="p-3 rounded-2xl bg-emer<div className={`ct-title ${ald-500/10 text-emerald-500 group-hover:scale-110 transition-transform">
                   <RotateCcw size={24} />
                 </div>
                 <div>
@@ -848,6 +973,7 @@ const PlaygroundSection = () => {
           </div>
         </div>
       </div>
+
     </section>
   )
 }

@@ -24,6 +24,8 @@
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
     --radius: 0.75rem;
+    --ct-title-default: #000000;
+    --ct-description-default: #4b5563;
   }
 
   .dark {
@@ -46,6 +48,8 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
+    --ct-title-default: #ffffff;
+    --ct-description-default: #9ca3af;
   }
 
   body {
@@ -102,7 +106,7 @@
   }
   
   .glass {
-    @apply backdrop-blur-xl bg-white/40 dark:bg-black/40 border border-white/20 dark:border-white/10;
+    @apply backdrop-blur-xl bg-muted/40 dark:bg-black/40 border border-black/5 dark:border-white/10;
   }
 
   .animate-gradient-move {
@@ -152,6 +156,15 @@ input[type='range']::-webkit-slider-thumb {
 }
 input[type='range']::-webkit-slider-thumb:hover {
   box-shadow: 0 0 0 5px hsl(var(--primary) / 0.25);
+}
+
+/* Toast Title & Description Color Fix */
+.ct-toast .ct-title {
+  color: var(--ct-title-default) !important;
+}
+
+.ct-toast .ct-description {
+  color: var(--ct-description-default) !important;
 }
 
 /* Dark mode form inputs */
